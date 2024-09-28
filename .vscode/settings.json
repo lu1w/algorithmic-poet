@@ -1,4 +1,3 @@
 {
-  "prettier.tabWidth": 2,
-  "haskell.hlint.run": "onSave"
+  "prettier.tabWidth": 4
 }

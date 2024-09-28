@@ -13,7 +13,7 @@ import Data.Foldable (traverse_)
 
 import ProblemSetup (Poem)
 import Words (syllables)
-import Proj2 (fillInPoem, generateAllHaikus)
+import Poet (fillInPoem, generateAllHaikus)
 
 --
 -- Utils

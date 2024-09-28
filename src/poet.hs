@@ -12,14 +12,14 @@
                  respectively on each line. 
 -}
 
-module Proj2 
+module Poet 
   (fillInPoem, generateAllHaikus)
 where
 
 import qualified Data.List as L
 import qualified Data.Map as M
 import Data.Maybe (fromJust)
-import ProblemSetup (Poem, PoemMetric(..), PoemScore, distinct)
+import ProblemSetup (Poem, PoemMetric(..), PoemScore, distinct) 
 import Words (syllables)
 
 type MapSyllablesWords = M.Map Int [String]
