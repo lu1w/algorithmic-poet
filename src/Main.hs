@@ -15,6 +15,7 @@ import ProblemSetup (Poem)
 import Words (syllables)
 import Poet (fillInPoem, generateAllHaikus)
 
+import Tests
 --
 -- Utils
 --
