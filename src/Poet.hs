@@ -31,6 +31,11 @@ justSyllables = fromJust . syllables
 --     in
 --     L.groupBy haveSameSyllables (L.sortOn justSyllables wordlist)
 
+{- 
+    Take in a wordlist; return a map, where the key is the number of syllables,
+    and the value is the list of words in the wordlist with the number of 
+    syllables.
+-}
 getSyllablesToWords :: [String] -> SyllablesWordsMap
 getSyllablesToWords = 
     L.foldl' 
@@ -44,8 +49,17 @@ getWordsForAllSyllables syllablesToWordsMap syllables =
         wordsOfSyllables = map (`M.lookup` syllablesToWordsMap) syllables
     in
     sequence wordsOfSyllables
+-- getWordsForAllSyllables :: SyllablesWordsMap -> [Int] -> Maybe [[String]]
+-- getWordsForAllSyllables syllablesToWordsMap =
+--     foldM (\acc s -> (:) <$> M.lookup s syllablesToWordsMap <*> Just acc) []
 
 
+{-
+    Take in a mapping from syllables to a list of words and a sequence of 
+    syllables; return all the possible poems where the word syllables matches
+    the sequence of syllables, using information from the mapping (i.e. only 
+    words existed in the map will be used)
+-}
 mapToPoem :: SyllablesWordsMap -> [Int] -> [Poem]
 mapToPoem syllablesToWordsMap syllablesSequence = 
     let wordsForSyllables :: Maybe [[String]]
@@ -54,10 +68,18 @@ mapToPoem syllablesToWordsMap syllablesSequence =
     in 
     maybe [] (filter distinct . sequence) wordsForSyllables
 
+{-
+    Take in a mapping from syllables to a list of words and a list of sequences
+    of syllables; return all the possible poems where the word syllables matches
+    a sequence of syllables within the list of syllables sequences, using 
+    information from the map (i.e. only words existed in the map will be used)
+-}
+mapToPoems :: SyllablesWordsMap -> [[Int]] -> [Poem]
+mapToPoems _ [] = [] 
+mapToPoems syllablesToWordsMap (sylbsSeq:sylbsSeqs) = 
+    mapToPoem syllablesToWordsMap sylbsSeq ++ 
+    mapToPoems syllablesToWordsMap sylbsSeqs
 
--- getWordsForAllSyllables :: SyllablesWordsMap -> [Int] -> Maybe [[String]]
--- getWordsForAllSyllables syllablesToWordsMap =
---     foldM (\acc s -> (:) <$> M.lookup s syllablesToWordsMap <*> Just acc) []
 
 fillInPoem :: [String] -> [Int] -> [Poem]
 fillInPoem wordlist syllablesSequence =
@@ -67,6 +89,9 @@ fillInPoem wordlist syllablesSequence =
     mapToPoem syllablesToWordsMap syllablesSequence
 
 
+{-
+    Partitions an interger into one or more integers that sum up to it. 
+-}
 partitions :: Int -> [[Int]]
 partitions 0 = [[]]
 partitions k = [x:xs | x <- [1..k], xs <- partitions (k-x)]
@@ -77,29 +102,44 @@ generateAllHaikus wordlist =
     let syllablesToWordsMap :: SyllablesWordsMap
         syllablesToWordsMap = getSyllablesToWords wordlist
        
-        partitionsFive :: [[Int]]
-        partitionsFive = partitions 5
+        fillInFiveSyllables :: [Poem]
+        fillInFiveSyllables = 
+            mapToPoems syllablesToWordsMap (partitions 5)
+            
+        fillInSevenSyllables :: [Poem]
+        fillInSevenSyllables = 
+            mapToPoems syllablesToWordsMap (partitions 7)
 
-        partitionsSeven :: [[Int]]
-        partitionsSeven = partitions 7
+        -- partitionsFive :: [[Int]]
+        -- partitionsFive = partitions 5
+
+        -- partitionsSeven :: [[Int]]
+        -- partitionsSeven = partitions 7
+
         
-        syllablesSequences :: [[Int]] 
-        syllablesSequences = 
-            [ line1 ++ line2 ++ line3 
-            | line1 <- partitionsFive
-            , line2 <- partitionsSeven
-            , line3 <- partitionsFive
-            ]
+        -- syllablesSequences :: [[Int]] 
+        -- syllablesSequences = 
+        --     [ line1 ++ line2 ++ line3 
+        --     | line1 <- partitionsFive
+        --     , line2 <- partitionsSeven
+        --     , line3 <- partitionsFive
+        --     ]
 
         -- fillInHaikus :: [[Int]] -> [Poem]
         -- fillInHaikus [] = [] 
         -- fillInHaikus (sylbsSeq:sylbsSeqs) = 
         --     fillInPoem wordlist sylbsSeq ++ fillInHaikus sylbsSeqs
      
-        fillInHaikus :: [[Int]] -> [Poem]
-        fillInHaikus [] = [] 
-        fillInHaikus (sylbsSeq:sylbsSeqs) = 
-            mapToPoem syllablesToWordsMap sylbsSeq ++ 
-            fillInHaikus sylbsSeqs
+        -- fillInHaikus :: [[Int]] -> [Poem]
+        -- fillInHaikus [] = [] 
+        -- fillInHaikus (sylbsSeq:sylbsSeqs) = 
+        --     mapToPoem syllablesToWordsMap sylbsSeq ++ 
+        --     fillInHaikus sylbsSeqs
     in 
-    fillInHaikus syllablesSequences
+    filter 
+        distinct 
+        [ line1 ++ line2 ++ line3 
+        | line1 <- fillInFiveSyllables
+        , line2 <- fillInSevenSyllables
+        , line3 <- fillInFiveSyllables
+        ]
