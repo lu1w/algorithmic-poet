@@ -12,10 +12,12 @@ import Data.List (intercalate)
 import Data.Foldable (traverse_)
 
 import ProblemSetup (Poem)
-import Words (syllables)
+import Words (syllables, wordList)
 import Poet (fillInPoem, generateAllHaikus)
 
-import Tests
+-- import Tests1
+import Tests2
+
 --
 -- Utils
 --
@@ -61,6 +63,11 @@ sampleWordlists =
   -- there should be 2 haikus with the following wordlist
   -- the second will be with the 5-syllable lines swapped
   [ ["abbreviation","abbreviator","americanisation"]
+  , (take 10 wordList) -- 6624
+  , (take 12 wordList) -- 59136
+  , (drop 90 (take 100 wordList)) -- 228 
+  , (drop 160 (take 175 wordList)) -- 1008000
+  , (take 15 wordList) -- terminate 899712
   -- there should be 1157760 haikus with the following wordlist
   , ["a","abb","able","ache","ace","abase","abash","aardvark","abacus","abalone"]
   ]
