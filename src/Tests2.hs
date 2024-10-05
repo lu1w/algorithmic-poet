@@ -2,7 +2,6 @@ module Tests2 where
 
 import Poet (generateAllHaikus)
 import Words (wordList, syllables)
-import Tests1 (test2)
 
 -- V1.0 - only evaluate the map once 
 -- V2.0 - filter each line before cross product the lines 

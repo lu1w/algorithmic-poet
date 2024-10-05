@@ -1,28 +1,28 @@
 {-
-    Author    : Yilu Wang 
-    Purpose   : Project 2 for Unimelb COMP30020 2024 Sem 2 - generation of 
-                Haiku poems where there are 3 lines wiht 5, 7, 5 syllables 
-                respectively on each line. 
-    Copyright   : (C) Yilu Wang, 2024
+Author    : Yilu Wang 
+Purpose   : Project 2 for Unimelb COMP30020 2024 Sem 2 - generation of 
+            Haiku poems where there are 3 lines wiht 5, 7, 5 syllables 
+            respectively on each line. 
+Copyright   : (C) Yilu Wang, 2024
 
 
-    There are two main functions exposed to the outside world: `fillInPoem` and 
-    `generateAllHaikus`. These two functions generates poems that match specific 
-    syllables sequence(s), where `fillInPoem` follows the syllables sequence given 
-    by the caller, and `generateAllHaikus` follows the rules for Haiku poem (i.e. 5,
-    7, 5 syllables on each of the three lines in the poem). 
+There are two main functions exposed to the outside world: `fillInPoem` and 
+`generateAllHaikus`. These two functions generates poems that match specific 
+syllables sequence(s), where `fillInPoem` follows the syllables sequence given 
+by the caller, and `generateAllHaikus` follows the rules for Haiku poem (i.e. 5,
+7, 5 syllables on each of the three lines in the poem). 
 
-    They both use a common lower level logic to compute the result, implemented in 
-    `mapToPoem`, where a map structure is used as the container to store and pass 
-    words around. This module relies heavily on the map structure to store the words 
-    and their corresponding number of syllables. 
+They both use a common lower level logic to compute the result, implemented in 
+`mapToPoem`, where a map structure is used as the container to store and pass 
+words around. This module relies heavily on the map structure to store the words 
+and their corresponding number of syllables. 
 
-    The number of occurrances of each word in the output poems will not exceed its 
-    number of occurrances in the input wordlist (e.g. if the input wordlist does not
-    contain duplicates, the output poems will not have duplicate words). To achieve
-    this behaviour, every used-word is removed from the map structure before 
-    computing the next word in the output peom. See `mapToPoem` and other functions
-    for more implementation details. 
+The number of occurrances of each word in the output poems will not exceed its 
+number of occurrances in the input wordlist (e.g. if the input wordlist does not
+contain duplicates, the output poems will not have duplicate words). To achieve
+this behaviour, every used-word is removed from the map structure before 
+computing the next word in the output peom. See `mapToPoem` and other functions
+for more implementation details. 
 -}
 
 module Poet 
